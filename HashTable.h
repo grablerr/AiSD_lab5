@@ -77,6 +77,9 @@ namespace HT {
 			if (table[pos].key == key && !table[pos].deleted) {
 				return pos;
 			}
+			if (table[pos].deleted) {
+				break;
+			}
 			pos = (pos + 1) % capacity;
 		} while (pos != initialPos);
 
@@ -145,10 +148,19 @@ namespace HT {
 
 	template<typename T>
 	inline void HashTable<T>::insert_or_assign(int key, const T& value) {
-		int pos = hash(key) % capacity;
-		while (!table[pos].deleted && table[pos].key != key) {
-			pos = (pos + 1) % capacity;
+		if (size >= 0.7 * capacity) {
+			resize(2 * capacity);
 		}
+		int pos = hash(key) % capacity;
+		int initialPos = pos;
+		do {
+			if (table[pos].key == key && !table[pos].deleted) {
+				table[pos].value = value;
+				return;
+			}
+			pos = (pos + 1) % capacity;
+		} while (pos != initialPos && !table[pos].deleted);
+
 		if (table[pos].deleted) {
 			++size;
 		}

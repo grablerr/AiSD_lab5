@@ -22,6 +22,7 @@ void tests() {
     ht.insert(41, 900);
 
     cout << "\nAfter reaching 70% load factor:" << endl;
+    
     ht.print();
 }
 
@@ -47,6 +48,7 @@ bool compare_hashes(const HashTable<T>& hashTable, const string& str) {
 }
 
 int main() {
+
     HashTable<string> hashTable;
 
     string userInput;
